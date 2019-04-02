@@ -1,5 +1,5 @@
  //控制层 
-app.controller('typeTemplateController' ,function($scope,$controller   ,typeTemplateService){	
+app.controller('typeTemplateController' ,function($scope,$controller   ,typeTemplateService,brandService,specificationService){
 	
 	$controller('baseController',{$scope:$scope});//继承
 	
@@ -26,7 +26,13 @@ app.controller('typeTemplateController' ,function($scope,$controller   ,typeTemp
 	$scope.findOne=function(id){				
 		typeTemplateService.findOne(id).success(
 			function(response){
-				$scope.entity= response;					
+				$scope.entity= response;
+
+                $scope.entity.brandIds=JSON.parse($scope.entity.brandIds);
+                alert($scope.entity.brandIds[0].text);
+                $scope.entity.specIds=JSON.parse($scope.entity.specIds);
+                $scope.entity.customAttributeItems=JSON.parse($scope.entity.customAttributeItems);
+
 			}
 		);				
 	}
@@ -54,16 +60,18 @@ app.controller('typeTemplateController' ,function($scope,$controller   ,typeTemp
 	 
 	//批量删除 
 	$scope.dele=function(){			
-		//获取选中的复选框			
-		typeTemplateService.dele( $scope.selectIds ).success(
-			function(response){
-				if(response.success){
-					$scope.reloadList();//刷新列表
-					$scope.selectIds=[];
-				}						
-			}		
-		);				
-	}
+		//获取选中的复选框
+		if(confirm("确定要删除吗？")){
+            typeTemplateService.dele( $scope.selectIds ).success(
+                function(response){
+                    if(response.success){
+                        $scope.reloadList();//刷新列表
+                        $scope.selectIds=[];
+                    }
+                }
+            );
+        }
+	};
 	
 	$scope.searchEntity={};//定义搜索对象 
 	
@@ -75,6 +83,34 @@ app.controller('typeTemplateController' ,function($scope,$controller   ,typeTemp
 				$scope.paginationConf.totalItems=response.total;//更新总记录数
 			}			
 		);
-	}
-    
+	};
+
+
+	//查找品牌列表数据
+	//$scope.brandList={data:[{id:1,text:'联想'},{id:2,text:'华为'},{id:3,text:'中兴'}]};
+	$scope.findBrandList=function () {
+        brandService.findBrandList().success(
+        	function (response) {
+                $scope.brandList = {data:response};
+            }
+		)
+    }
+
+    //查看规格列表数据
+	$scope.findSpecList=function () {
+		specificationService.findSpecList().success(
+			function (response) {
+                $scope.specList = {data:response};
+            }
+		)
+    }
+
+    $scope.addTableRow=function () {
+        $scope.entity.customAttributeItems.push({});
+    }
+
+
+    $scope.deleteTableRow=function (index) {
+        $scope.entity.customAttributeItems.splice(index,1);
+    }
 });	

@@ -11,6 +11,7 @@ import entity.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 //@Transactional
@@ -104,6 +105,11 @@ public class BrandServiceImpl implements BrandService{
         PageHelper.startPage(page,size);
         Page<TbBrand> page1 = (Page<TbBrand>) tbBrandMapper.selectByExample(example);
         return new PageResult(page1.getTotal(),page1.getResult());
+    }
+
+    @Override
+    public List<Map> findOptionList() {
+        return tbBrandMapper.findOptionList();
     }
 
 }

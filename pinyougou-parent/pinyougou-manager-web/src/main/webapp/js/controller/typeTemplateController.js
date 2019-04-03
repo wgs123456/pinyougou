@@ -29,7 +29,7 @@ app.controller('typeTemplateController' ,function($scope,$controller   ,typeTemp
 				$scope.entity= response;
 
                 $scope.entity.brandIds=JSON.parse($scope.entity.brandIds);
-                alert($scope.entity.brandIds[0].text);
+               // alert($scope.entity.brandIds[0].text);
                 $scope.entity.specIds=JSON.parse($scope.entity.specIds);
                 $scope.entity.customAttributeItems=JSON.parse($scope.entity.customAttributeItems);
 

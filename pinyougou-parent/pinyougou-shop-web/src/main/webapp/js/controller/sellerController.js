@@ -105,5 +105,13 @@ app.controller('sellerController' ,function($scope,$controller   ,sellerService)
 			}			
 		);
 	}
-    
+
+
+	$scope.getUserName=function () {
+		sellerService.getUserName().success(
+			function (response) {
+				$scope.loginName=response.userName;
+            }
+		)
+    }
 });	

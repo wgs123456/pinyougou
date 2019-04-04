@@ -31,7 +31,7 @@ app.controller('sellerController' ,function($scope,$controller   ,sellerService)
 		);				
 	}
 	
-	//保存 
+/*	//保存
 	$scope.save=function(){				
 		var serviceObject;//服务层对象  				
 		if($scope.entity.id!=null){//如果有ID
@@ -49,7 +49,20 @@ app.controller('sellerController' ,function($scope,$controller   ,sellerService)
 				}
 			}		
 		);				
-	}
+	}*/
+
+    $scope.update=function(){
+        sellerService.update( $scope.entity  ).success(
+            function(response){
+                if(response.success){
+                    //重新查询
+                    $scope.reloadList();//重新加载
+                }else{
+                    alert(response.message);
+                }
+            }
+        );
+    }
 
 
     //新增

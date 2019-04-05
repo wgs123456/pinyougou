@@ -84,4 +84,25 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
             }
 		)
     }
+    //设置分类级别
+	$scope.grade=1;
+	$scope.setGrade=function (value) {
+		$scope.grade=value;
+    }
+    //设置面包屑（分类导航列）
+	$scope.findList=function (p_entity) {
+		if ($scope.grade == 1){
+			$scope.entity_1=null;
+			$scope.entity_2=null;
+		}
+		if ($scope.grade == 2){
+			$scope.entity_1=p_entity;
+			$scope.entity_2=null;
+		}
+		if ($scope.grade == 3){
+			$scope.entity_2=p_entity;
+		}
+
+		$scope.findByParentId(p_entity.id);
+    }
 });	

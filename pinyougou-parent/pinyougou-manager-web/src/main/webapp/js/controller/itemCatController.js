@@ -33,7 +33,8 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 	
 	//保存 
 	$scope.save=function(){				
-		var serviceObject;//服务层对象  				
+		var serviceObject;//服务层对象
+		$scope.entity.parentId=$scope.parentId;
 		if($scope.entity.id!=null){//如果有ID
 			serviceObject=itemCatService.update( $scope.entity ); //修改  
 		}else{
@@ -43,7 +44,8 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 			function(response){
 				if(response.success){
 					//重新查询 
-		        	$scope.reloadList();//重新加载
+		        	//$scope.reloadList();//重新加载
+					$scope.findByParentId($scope.parentId);
 				}else{
 					alert(response.message);
 				}
@@ -54,15 +56,18 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 	 
 	//批量删除 
 	$scope.dele=function(){			
-		//获取选中的复选框			
-		itemCatService.dele( $scope.selectIds ).success(
-			function(response){
-				if(response.success){
-					$scope.reloadList();//刷新列表
-					$scope.selectIds=[];
-				}						
-			}		
-		);				
+		//获取选中的复选框
+		if (confirm("确定要删除吗？")){
+            itemCatService.dele( $scope.selectIds ).success(
+                function(response){
+                    if(response.success){
+                        $scope.reloadList();//刷新列表
+                        $scope.selectIds=[];
+                    }
+                }
+            );
+        }
+
 	}
 	
 	$scope.searchEntity={};//定义搜索对象 
@@ -78,6 +83,7 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 	}
     //根据父id查询下一级数据
 	$scope.findByParentId=function (parentId) {
+		$scope.parentId=parentId;
         itemCatService.findByParentId(parentId).success(
         	function (response) {
 				$scope.list = response;
@@ -105,4 +111,6 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 
 		$scope.findByParentId(p_entity.id);
     }
+    //定义父id
+	$scope.parentId=0;
 });	

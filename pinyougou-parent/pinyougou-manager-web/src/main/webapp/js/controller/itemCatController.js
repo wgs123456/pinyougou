@@ -76,5 +76,12 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 			}			
 		);
 	}
-    
+    //根据父id查询下一级数据
+	$scope.findByParentId=function (parentId) {
+        itemCatService.findByParentId(parentId).success(
+        	function (response) {
+				$scope.list = response;
+            }
+		)
+    }
 });	

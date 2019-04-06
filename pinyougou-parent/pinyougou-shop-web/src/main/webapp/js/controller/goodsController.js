@@ -50,7 +50,24 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService){
 			}		
 		);				
 	}
-	
+
+
+    //增加
+    $scope.add=function(){
+		$scope.entity.goodsDesc.introduction=editor.html();
+        goodsService.add( $scope.entity  ).success(
+            function(response){
+                if(response.success){
+                    //重新查询
+					alert("增加成功");
+					$scope.entity={};
+                    editor.html("");
+                }else{
+                    alert(response.message);
+                }
+            }
+        );
+    }
 	 
 	//批量删除 
 	$scope.dele=function(){			

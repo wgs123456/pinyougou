@@ -1,5 +1,5 @@
  //控制层 
-app.controller('itemCatController' ,function($scope,$controller   ,itemCatService){	
+app.controller('itemCatController' ,function($scope,$controller  ,itemCatService){
 	
 	$controller('baseController',{$scope:$scope});//继承
 	
@@ -23,10 +23,11 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 	}
 	
 	//查询实体 
-	$scope.findOne=function(id){				
+	$scope.findOne=function(id){
 		itemCatService.findOne(id).success(
 			function(response){
-				$scope.entity= response;					
+				$scope.entity= response;
+				$scope.entity.typeId=JSON.parse($scope.entity.typeId);
 			}
 		);				
 	}
@@ -35,11 +36,15 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 	$scope.save=function(){				
 		var serviceObject;//服务层对象
 		$scope.entity.parentId=$scope.parentId;
+
+
+        $scope.entity.typeId=$scope.entity.typeId.id;
 		if($scope.entity.id!=null){//如果有ID
 			serviceObject=itemCatService.update( $scope.entity ); //修改  
 		}else{
 			serviceObject=itemCatService.add( $scope.entity  );//增加 
-		}				
+		}
+
 		serviceObject.success(
 			function(response){
 				if(response.success){
@@ -61,14 +66,29 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
             itemCatService.dele( $scope.selectIds ).success(
                 function(response){
                     if(response.success){
-                        $scope.reloadList();//刷新列表
+                        alert(response.message);
                         $scope.selectIds=[];
-                    }
+                        // window.location.reload();
+                        $scope.reloadList();//刷新列表
+                    }else {
+                    	alert(response.message);
+                        $scope.selectIds=[];
+                        //  window.location.reload();
+                        $scope.reloadList();//刷新列表
+					}
                 }
             );
         }
 
 	}
+
+	$scope.findTem=function (tid) {
+        itemCatService.findTem(tid).success(
+        	function (response) {
+				$scope.typeTem=response;
+            }
+		)
+    }
 	
 	$scope.searchEntity={};//定义搜索对象 
 	
@@ -89,6 +109,15 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 				$scope.list = response;
             }
 		)
+    }
+
+    //查看模板id数据
+    $scope.findIdsList=function () {
+        itemCatService.findIdsList().success(
+            function (response) {
+                $scope.idsList = {data:response};
+            }
+        )
     }
     //设置分类级别
 	$scope.grade=1;

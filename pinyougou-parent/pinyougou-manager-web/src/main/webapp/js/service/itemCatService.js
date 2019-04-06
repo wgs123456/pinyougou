@@ -33,4 +33,12 @@ app.service('itemCatService',function($http){
 	this.findByParentId=function (parentId) {
 		return $http.get('../itemCat/findByParentId.do?parentId='+parentId);
     }
+    //查询id下拉列表
+    this.findIdsList=function () {
+        return $http.post('../typeTemplate/findIdsList.do');
+    }
+    //查询TypeTemplate对象
+	this.findTem=function (tid) {
+		return $http.post('../typeTemplate/findOne.do?id='+tid);
+    }
 });

@@ -14,16 +14,21 @@
 	<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
 
+	<link rel="stylesheet" href="../plugins/select2/select2.css" />
+	<link rel="stylesheet" href="../plugins/select2/select2-bootstrap.css" />
+	<script src="../plugins/select2/select2.min.js" type="text/javascript"></script>
 
 	<script src="../plugins/angularjs/angular.min.js"></script>
 
 	<script src="../js/base.js"></script>
+	<script type="text/javascript" src="../js/angular-select2.js"> </script>
+
 	<script src="../js/service/itemCatService.js"></script>
 	<script src="../js/controller/baseController.js"></script>
 	<script src="../js/controller/itemCatController.js"></script>
 </head>
 
-<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="itemCatController" ng-init="findByParentId(0)">
+<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="itemCatController" ng-init="findByParentId(0);findIdsList()">
   <!-- .box-body -->
                 
                     <div class="box-header with-border">
@@ -33,11 +38,22 @@
 
                     <div class="box-body">
                   			 <ol class="breadcrumb">	                        	
-                        		<li>
+                        		<!--<li>
 		                        	<a href="#" ng-click="grade=1;findList({id:0})" >顶级分类列表</a>
 		                        </li>
                                  <li><a href="#" ng-click="grade=2;findList(entity_1)">{{entity_1.name}}</a></li>
-                                 <li><a href="#" ng-click="grade=3;findList(entity_2)">{{entity_2.name}}</a></li>
+                                 <li><a href="#" ng-click="grade=3;findList(entity_2)">{{entity_2.name}}</a></li>-->
+								 <li ng-if="grade>0">
+									 <a href="#" ng-click="$parent.grade=1;findList({id:0})" >顶级分类列表</a>
+								 </li>
+								 <li ng-if="grade>1">
+									 <a href="#" ng-click="$parent.grade=2;findList(entity_1)">{{entity_1.name}}</a>
+								 </li>
+								 <li ng-if="grade>2">
+									 <a href="#" ng-click="$parent.grade=3;findList(entity_2)">{{entity_2.name}}</a>
+								 </li>
+
+
 		                        <!--<li>
 		                       		<a href="#" ng-clcik="grade=2;findList(entity_1)" >{{entity_1.name}}</a>
 		                        </li>
@@ -140,11 +156,11 @@
 		      	<tr>
 		      		<td>类型模板</td>
 		      		<td>	      		
-		      			<input select2 config="options['type_template']" ng-model="entity.typeId" placeholder="商品类型模板" class="form-control" type="text"/>
+		      			<input select2 select2-model="entity.typeId"  config="idsList" placeholder="商品类型模板" class="form-control" type="text"/>
 		      		</td>		      		      		
 		      	</tr>		      	
 			 </table>				
-			
+			{{idsList}}123
 		</div>
 		<div class="modal-footer">						
 			<button class="btn btn-success" data-dismiss="modal" aria-hidden="true" ng-click="save()">保存</button>

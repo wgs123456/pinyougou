@@ -105,6 +105,16 @@ app.controller('typeTemplateController' ,function($scope,$controller   ,typeTemp
 		)
     }
 
+    /*//查看模板id数据
+	$scope.findIdsList=function () {
+		typeTemplateService.findIdsList().success(
+			function (response) {
+				alert("请求成功");
+                $scope.idsList = {data:response};
+            }
+		)
+    }*/
+
     $scope.addTableRow=function () {
         $scope.entity.customAttributeItems.push({});
     }
